@@ -1,17 +1,17 @@
 {
     "description": "dave-session",
-    "main": "./voltah.js",
+    "main": "./index.js",
   "engines" : { 
     "npm" : ">=9.7.2",
     "node" : ">=20.0.0"
     },
     "scripts": {
-    "start": "node voltah.js"
+    "start": "node index.js"
   },
   "author": "davr",
   "license": "GPL-3.0 license",
   "dependencies": {
-    "@whiskeysockets/baileys":"^6.7.21",
+    "@whiskeysockets/baileys":github:jamestechpy/bails",
     "qrcode": "^1.5.3",
     "awesome-phonenumber": "^2.64.0",
     "pino": "^8.1.0",
