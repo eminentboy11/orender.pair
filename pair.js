@@ -11,7 +11,7 @@ const {
     delay,
     makeCacheableSignalKeyStore,
     Browsers
-} = require('@angstvorfrauen/baileys');
+} = require('@whiskeysockets/baileys');
 
 function removeFile(FilePath) {
     if (!fs.existsSync(FilePath)) return false;
@@ -33,13 +33,14 @@ router.get('/', async (req, res) => {
                 version: [2, 3000, 1025190524],
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: Browsers.macOS('Chrome')
+                browser: Browsers.windows('Edge')
             });
 
             if (!Pair_Code_By_Mbuvi_Tech.authState.creds.registered) {
                 await delay(1500);
                 num = num.replace(/[^0-9]/g, '');
-                const code = await Pair_Code_By_Mbuvi_Tech.requestPairingCode(num);
+                const custom = "DAVEBOTS"; 
+                const code = await Pair_Code_By_Mbuvi_Tech.requestPairingCode(num,custom);
                 if (!res.headersSent) {
                     await res.send({ code });
                 }
@@ -56,6 +57,7 @@ router.get('/', async (req, res) => {
                     let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: 'DAVE-AI:~' + b64data });
 
                     let Mbuvi_MD_TEXT = `
+        
 ╔════════════════════◇
 ║『 thanks for choosing my Bots』
 ║ -Set the session ID in Heroku and even panels:
