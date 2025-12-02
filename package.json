@@ -1,5 +1,5 @@
 {
-    "description": "June-sessions",
+    "description": "june-sessions",
     "main": "./index.js",
   "engines" : { 
     "npm" : ">=9.7.2",
