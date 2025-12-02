@@ -1,507 +1,964 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Digitex Xmd Bot" />
-  <title>DAVE SESSION</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Digitex Xmd Bot - Advanced Dashboard" />
+  <title>DAVE XMD | Cyber Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<style>
+  <style>
     :root {
-      --primary: linear-gradient(135deg, #1E90FF, #800000);
-      --bg: #000000;
-      --glass: rgba(255, 255, 255, 0.05);
-      --text: #ffffff;
-      --muted: #228B22;
-      --highlight: #696969;
-      --radius: 16px;
-      --blur: 12px;
-      --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      --glow: 0 0 15px rgba(0, 212, 255, 0.3);
+      --primary-gradient: linear-gradient(135deg, #1E90FF 0%, #800000 50%, #FF4500 100%);
+      --secondary-gradient: linear-gradient(135deg, #FF4500 0%, #1E90FF 100%);
+      --bg-dark: #0a0a0a;
+      --bg-darker: #050505;
+      --glass: rgba(20, 20, 30, 0.6);
+      --glass-light: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0ff;
+      --text-muted: #8a8aff;
+      --accent-blue: #1E90FF;
+      --accent-red: #FF4500;
+      --accent-green: #228B22;
+      --accent-purple: #9370DB;
+      --radius-large: 24px;
+      --radius-medium: 16px;
+      --radius-small: 12px;
+      --blur-intensity: 20px;
+      --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-quick: 0.2s ease;
+      --glow-blue: 0 0 25px rgba(30, 144, 255, 0.5);
+      --glow-red: 0 0 25px rgba(255, 69, 0, 0.5);
+      --shadow-deep: 0 20px 60px rgba(0, 0, 0, 0.5);
     }
 
+    /* Reset and Base Styles */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'JetBrains Mono', monospace;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
+      font-family: 'Exo 2', 'JetBrains Mono', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
       min-height: 100vh;
       line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(30, 144, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 69, 0, 0.05) 0%, transparent 50%);
+      position: relative;
     }
 
-    header {
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(45deg, transparent 45%, rgba(30, 144, 255, 0.02) 50%, transparent 55%),
+        linear-gradient(-45deg, transparent 45%, rgba(255, 69, 0, 0.02) 50%, transparent 55%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* Header Styles */
+    .cyber-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(10, 10, 15, 0.9);
+      backdrop-filter: blur(var(--blur-intensity));
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 1000;
+      padding: 1rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 3rem;
-      background: var(--glass);
-      backdrop-filter: blur(var(--blur));
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
-    .logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      background: var(--primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: var(--glow);
-    }
-
-    .status {
+    .logo-container {
       display: flex;
-      gap: 1.5rem;
+      align-items: center;
+      gap: 1rem;
     }
 
-    .status-item {
-      background: rgba(0, 0, 0, 0.3);
-      padding: 0.6rem 1.2rem;
+    .logo-glitch {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: glitch 3s infinite;
+    }
+
+    .logo-glitch::before,
+    .logo-glitch::after {
+      content: 'DAVE';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.8;
+    }
+
+    .logo-glitch::before {
+      animation: glitch-top 1s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+      -webkit-clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+    }
+
+    .logo-glitch::after {
+      animation: glitch-bottom 1.5s infinite;
+      clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+      -webkit-clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+    }
+
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+    }
+
+    @keyframes glitch-top {
+      0%, 100% { transform: translate(0); color: #1E90FF; }
+      50% { transform: translate(-2px); color: #FF4500; }
+    }
+
+    @keyframes glitch-bottom {
+      0%, 100% { transform: translate(0); color: #FF4500; }
+      50% { transform: translate(2px); color: #1E90FF; }
+    }
+
+    .status-grid {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .status-chip {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 0.5rem 1rem;
       border-radius: 50px;
       display: flex;
       align-items: center;
-      gap: 0.7rem;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      border: 1px solid var(--glass-border);
+      transition: var(--transition-quick);
+      backdrop-filter: blur(10px);
+    }
+
+    .status-chip:hover {
+      background: rgba(30, 144, 255, 0.15);
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    .status-chip i {
+      color: var(--accent-blue);
       font-size: 0.9rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: var(--transition);
     }
 
-    .status-item:hover {
-      background: rgba(0, 212, 255, 0.1);
-      border-color: var(--highlight);
+    .status-chip.warning i {
+      color: var(--accent-red);
     }
 
-    .status-item i {
-      color: var(--highlight);
+    .status-chip.success i {
+      color: var(--accent-green);
     }
 
-    main {
-      flex: 1;
-      padding: 3rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2.5rem;
-    }
-
-    .tools {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-      width: 100%;
+    /* Main Content */
+    .main-wrapper {
+      margin-top: 80px;
+      padding: 1.5rem;
       max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .tool {
+    /* Tools Grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .cyber-card {
       background: var(--glass);
-      backdrop-filter: blur(var(--blur));
-      border-radius: var(--radius);
-      padding: 2rem;
-      text-align: center;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
-      transition: var(--transition);
+      backdrop-filter: blur(var(--blur-intensity));
+      border-radius: var(--radius-large);
+      padding: 1.8rem;
+      border: 1px solid var(--glass-border);
+      transition: var(--transition-smooth);
       cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.05);
       position: relative;
       overflow: hidden;
+      box-shadow: var(--shadow-deep);
     }
 
-    .tool::before {
+    .cyber-card::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-      opacity: 0;
-      transition: var(--transition);
-    }
-
-    .tool:hover {
-      transform: translateY(-8px);
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), var(--glow);
-      border-color: rgba(0, 212, 255, 0.2);
-    }
-
-    .tool:hover::before {
-      opacity: 1;
-    }
-
-    .tool i {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      display: block;
-      background: var(--primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      transition: var(--transition);
-    }
-
-    .tool h3 {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      letter-spacing: 1px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .note {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-top: 1rem;
-      text-align: center;
-      max-width: 800px;
-      padding: 1rem;
-      border-radius: var(--radius);
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .note a {
-      color: var(--highlight);
-      text-decoration: none;
-      font-weight: 600;
-      transition: var(--transition);
-    }
-
-    .note a:hover {
-      text-shadow: 0 0 10px var(--highlight);
-    }
-
-    .music-player {
+      top: 0;
+      left: -100%;
       width: 100%;
-      max-width: 1000px;
-      background: var(--glass);
-      border-radius: var(--radius);
-      padding: 2rem;
-      backdrop-filter: blur(var(--blur));
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .music-player h2 {
-      font-family: 'Orbitron', sans-serif;
-      margin-bottom: 1.5rem;
-      letter-spacing: 1px;
-      background: var(--primary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-block;
-    }
-
-    .track {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 1.2rem;
-      border-radius: var(--radius);
-      margin-bottom: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: var(--transition);
-    }
-
-    .track:hover {
-      background: rgba(0, 0, 0, 0.4);
-      border-color: rgba(0, 212, 255, 0.2);
-    }
-
-    .progress {
-      width: 300px;
-      height: 6px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 3px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-fill {
-      width: 0%;
-      background: linear-gradient(90deg, #FF4500, #000000);
       height: 100%;
-      transition: width 0.1s linear;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: var(--transition-smooth);
+    }
+
+    .cyber-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: var(--accent-blue);
+      box-shadow: var(--glow-blue), var(--shadow-deep);
+    }
+
+    .cyber-card:hover::before {
+      left: 100%;
+    }
+
+    .cyber-card .icon-wrapper {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-medium);
+      background: linear-gradient(135deg, rgba(30, 144, 255, 0.1), rgba(255, 69, 0, 0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      border: 1px solid var(--glass-border);
+      transition: var(--transition-smooth);
+    }
+
+    .cyber-card:hover .icon-wrapper {
+      transform: rotate(15deg) scale(1.1);
+      background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(255, 69, 0, 0.2));
+    }
+
+    .cyber-card i {
+      font-size: 1.8rem;
+      background: var(--secondary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .cyber-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      color: var(--text-primary);
+      letter-spacing: 1px;
+    }
+
+    .cyber-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent-red);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Music Player */
+    .music-container {
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur-intensity));
+      border-radius: var(--radius-large);
+      padding: 2rem;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-deep);
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-title i {
+      font-size: 1.3rem;
+    }
+
+    .track-player {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--radius-medium);
+      padding: 1.5rem;
+      border: 1px solid var(--glass-border);
+      transition: var(--transition-smooth);
+    }
+
+    .track-player:hover {
+      border-color: var(--accent-blue);
+      box-shadow: var(--glow-blue);
+    }
+
+    .track-info {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .track-artwork {
+      width: 70px;
+      height: 70px;
+      border-radius: var(--radius-small);
+      background: linear-gradient(135deg, #1E90FF, #FF4500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      animation: rotateArtwork 20s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .track-player.playing .track-artwork {
+      animation-play-state: running;
+    }
+
+    @keyframes rotateArtwork {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .track-details h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+      color: var(--text-primary);
+    }
+
+    .track-details p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .control-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid var(--accent-blue);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+      font-size: 1.2rem;
+    }
+
+    .control-btn:hover {
+      background: var(--accent-blue);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--accent-blue);
+    }
+
+    .play-btn {
+      width: 60px;
+      height: 60px;
+      background: var(--primary-gradient);
+      border: none;
+      font-size: 1.5rem;
+    }
+
+    .progress-container {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
       position: relative;
     }
 
-    .progress-fill::after {
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: var(--primary-gradient);
+      border-radius: 4px;
+      position: relative;
+      transition: width 0.1s linear;
+    }
+
+    .progress-bar::after {
       content: '';
       position: absolute;
       right: 0;
-      top: -2px;
-      width: 10px;
-      height: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
       background: white;
       border-radius: 50%;
-      transform: translateX(50%);
+      box-shadow: 0 0 10px var(--accent-blue);
       opacity: 0;
       transition: opacity 0.2s;
     }
 
-    .track:hover .progress-fill::after {
+    .progress-container:hover .progress-bar::after {
       opacity: 1;
     }
 
-    button {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--highlight);
-      padding: 0.6rem 1.2rem;
-      border-radius: 50px;
-      color: white;
-      cursor: pointer;
-      font-weight: 600;
-      font-family: 'JetBrains Mono', monospace;
-      transition: var(--transition);
+    .time-display {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    button:hover {
-      background: rgba(0, 212, 255, 0.1);
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
-      transform: scale(1.05);
-    }
-
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .time {
-      font-family: 'JetBrains Mono', monospace;
+      justify-content: space-between;
+      color: var(--text-muted);
       font-size: 0.9rem;
-      color: var(--muted);
-      min-width: 50px;
-      text-align: center;
+      margin-top: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    @media (max-width: 768px) {
-      header {
-        padding: 1rem 1.5rem;
-        flex-direction: column;
-        gap: 1rem;
-      }
+    /* Notification Panel */
+    .notification-panel {
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur-intensity));
+      border-radius: var(--radius-large);
+      padding: 1.5rem;
+      border: 1px solid var(--glass-border);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-deep);
+    }
 
-      main {
+    .notification-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .notification-content i {
+      color: var(--accent-green);
+      font-size: 1.2rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .notification-content a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition-quick);
+      position: relative;
+    }
+
+    .notification-content a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent-blue);
+      transition: width 0.3s ease;
+    }
+
+    .notification-content a:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile Optimizations */
+    @media (max-width: 480px) {
+      .cyber-header {
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+      
+      .logo-glitch {
+        font-size: 1.5rem;
+      }
+      
+      .status-grid {
+        justify-content: center;
+        width: 100%;
+      }
+      
+      .main-wrapper {
+        margin-top: 100px;
+        padding: 1rem;
+      }
+      
+      .cyber-card {
         padding: 1.5rem;
       }
-
-      .tools {
-        grid-template-columns: 1fr;
+      
+      .cyber-card h3 {
+        font-size: 1.1rem;
       }
-
-      .track {
+      
+      .music-container {
+        padding: 1.5rem;
+      }
+      
+      .track-info {
         flex-direction: column;
-        gap: 1rem;
         text-align: center;
       }
-
-      .progress {
-        width: 100%;
+      
+      .player-controls {
+        flex-wrap: wrap;
+        justify-content: center;
       }
+    }
 
-      .controls {
-        width: 100%;
-        justify-content: space-between;
-      }
+    /* Loading Animation */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid transparent;
+      border-top: 3px solid var(--accent-blue);
+      border-right: 3px solid var(--accent-red);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1.5rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-gradient);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--secondary-gradient);
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">DAVE</div>
-    <div class="status">
-      <div class="status-item"><i class="fas fa-bolt"></i> <span id="battery">--%</span></div>
-      <div class="status-item"><i class="fas fa-wifi"></i> <span id="ip">Loading...</span></div>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-spinner"></div>
+    <div class="logo-glitch" style="font-size: 2rem;">DAVE XMD</div>
+    <p style="color: var(--text-muted); margin-top: 1rem;">Initializing Cyber Systems...</p>
+  </div>
+
+  <!-- Header -->
+  <header class="cyber-header">
+    <div class="logo-container">
+      <div class="logo-glitch">DAVE</div>
+      <div class="status-chip">
+        <i class="fas fa-satellite-dish"></i>
+        <span>ONLINE</span>
+      </div>
+    </div>
+    
+    <div class="status-grid">
+      <div class="status-chip" id="batteryChip">
+        <i class="fas fa-bolt"></i>
+        <span id="battery">--%</span>
+      </div>
+      <div class="status-chip">
+        <i class="fas fa-wifi"></i>
+        <span id="ip">Loading...</span>
+      </div>
+      <div class="status-chip" id="timeChip">
+        <i class="fas fa-clock"></i>
+        <span id="currentTime">--:--</span>
+      </div>
     </div>
   </header>
 
-  <main>
-    <div class="tools">
-      <div class="tool" onclick="window.open(`/pair`)">
-        <i class="fas fa-link"></i>
+  <!-- Main Content -->
+  <main class="main-wrapper">
+    <!-- Tools Grid -->
+    <div class="tools-grid">
+      <div class="cyber-card" onclick="window.open('/pair')">
+        <div class="icon-wrapper">
+          <i class="fas fa-link"></i>
+        </div>
         <h3>PAIR CODE</h3>
-        <p class="muted">Connect to WhatsApp by pairing your code</p>
+        <p>Connect to WhatsApp by pairing your code. Secure authentication system for bot connection.</p>
+        <div class="card-badge">RECOMMENDED</div>
       </div>
-      <div class="tool" onclick="window.open(`/qr`)">
-        <i class="fas fa-qrcode"></i>
+
+      <div class="cyber-card" onclick="window.open('/qr')">
+        <div class="icon-wrapper">
+          <i class="fas fa-qrcode"></i>
+        </div>
         <h3>QR CODE</h3>
-        <p class="muted">Alternative connection with scanning your device</p>
+        <p>Alternative connection with QR scanning. Fast and easy device pairing method.</p>
       </div>
-      <div class="tool" onclick="window.open(`https://github.com/giftdee/DAVE_XMD`)">
-        <i class="fab fa-github"></i>
-        <h3>Open DAVE-XMD Repo</h3>
-        <p class="muted">Bot Repo</p>
+
+      <div class="cyber-card" onclick="window.open('https://github.com/giftdee/DAVE_XMD')">
+        <div class="icon-wrapper">
+          <i class="fab fa-github"></i>
+        </div>
+        <h3>GITHUB REPOSITORY</h3>
+        <p>Access the complete DAVE-XMD bot source code, documentation, and updates.</p>
       </div>
-      <div class="tool" onclick="window.open(`https://developerdave.com`)">
-        <i class="fab fa-page"></i>
-        <h3>Support Owner Dave Host Website Page by using</h3>
-        <p class="muted">Host Website</p>
+
+      <div class="cyber-card" onclick="window.open('https://developerdave.com')">
+        <div class="icon-wrapper">
+          <i class="fas fa-server"></i>
+        </div>
+        <h3>HOST WEBSITE</h3>
+        <p>Support the developer by visiting the official hosting service website.</p>
+        <div class="card-badge">SUPPORT</div>
       </div>
-      <div class="tool" onclick="window.open(`https://wa.me/254104260236?text=hellow sir`)">
-        <i class="fas fa-headset"></i>
-        <h3>CONTACT OWNER</h3>
-        <p class="muted">Developer and Support your project</p>
+
+      <div class="cyber-card" onclick="window.open('https://wa.me/254104260236?text=Hello%20Dave%20-%20I%20need%20support')">
+        <div class="icon-wrapper">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h3>CONTACT DEVELOPER</h3>
+        <p>Get direct support from Dave. Technical assistance and project consultation available.</p>
       </div>
-      <div class="tool" onclick="window.open(`https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k`)">
-        <i class="fas fa-broadcast-tower"></i>
-        <h3>WA CHANNEL</h3>
-        <p class="muted">Get all Bots Update and New Script here</p>
+
+      <div class="cyber-card" onclick="window.open('https://whatsapp.com/channel/0029VbApvFQ2Jl84lhONkc3k')">
+        <div class="icon-wrapper">
+          <i class="fas fa-broadcast-tower"></i>
+        </div>
+        <h3>WHATSAPP CHANNEL</h3>
+        <p>Stay updated with latest bot features, scripts, and announcements.</p>
+        <div class="card-badge">NEW</div>
       </div>
     </div>
 
-    <div class="note">
-      If you encounter any issues, please contact the developer for support.🤝
+    <!-- Notification Panel -->
+    <div class="notification-panel">
+      <div class="notification-content">
+        <i class="fas fa-info-circle"></i>
+        <p>If you encounter any issues, please contact the developer for support. 🤝 
+          <a href="https://wa.me/254104260236" target="_blank">Click here for immediate assistance</a>
+        </p>
+      </div>
     </div>
 
-    <div class="music-player">
-      <h2>NOW PLAYING</h2>
-      <div class="track">
-        <div>
-          <strong>Dave Song</strong>
-          <div class="muted">Dev GIFTED DEV</div>
+    <!-- Music Player -->
+    <div class="music-container">
+      <h2 class="section-title">
+        <i class="fas fa-music"></i>
+        NOW PLAYING
+      </h2>
+      
+      <div class="track-player" id="trackPlayer">
+        <div class="track-info">
+          <div class="track-artwork">
+            <i class="fas fa-play"></i>
+          </div>
+          <div class="track-details">
+            <h4>Dave Cyber Theme</h4>
+            <p>Developer Gifted Dev • DAVE XMD Soundtrack</p>
+          </div>
         </div>
-        <div class="controls">
-          <button onclick="togglePlay('audio1')"><i class="fas fa-play"></i> PLAY</button>
-          <div class="progress"><div class="progress-fill" id="progress1"></div></div>
-          <span class="time" id="time1">0:00</span>
+        
+        <div class="player-controls">
+          <button class="control-btn" onclick="skipBackward()">
+            <i class="fas fa-backward"></i>
+          </button>
+          
+          <button class="control-btn play-btn" id="playBtn" onclick="togglePlay()">
+            <i class="fas fa-play" id="playIcon"></i>
+          </button>
+          
+          <button class="control-btn" onclick="skipForward()">
+            <i class="fas fa-forward"></i>
+          </button>
+          
+          <div class="progress-container" onclick="seekAudio(event)">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
         </div>
-        <audio id="audio1" src="https://files.catbox.moe/tkjzh7.m4a"></audio>
+        
+        <div class="time-display">
+          <span id="currentTimeDisplay">0:00</span>
+          <span id="durationDisplay">0:00</span>
+        </div>
       </div>
+      
+      <audio id="audioPlayer" src="https://files.catbox.moe/tkjzh7.m4a"></audio>
     </div>
   </main>
+
   <script>
-    // Smooth animations
+    // Initialize everything after page load
     document.addEventListener('DOMContentLoaded', () => {
-      document.body.style.opacity = '0';
+      // Hide loading screen with fade
       setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
-        document.body.style.opacity = '1';
-      }, 100);
+        const loadingScreen = document.getElementById('loadingScreen');
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 500);
+      }, 1000);
+
+      initSystem();
     });
 
-    // Update clock in title
-    const updateTime = () => {
-      const update = () => {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
-        document.title = `DAVE XMD MD | ${timeStr}`;
-      };
-      update();
-      setInterval(update, 1000);
+    // System Initialization
+    function initSystem() {
+      updateSystemTime();
+      updateBatteryStatus();
+      fetchIPAddress();
+      initMusicPlayer();
+      setupHoverEffects();
+      
+      // Start time updates
+      setInterval(updateSystemTime, 1000);
     }
 
-    // Battery status
-    const updateBattery = async () => {
+    // Update System Time
+    function updateSystemTime() {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString('en-US', { 
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      document.getElementById('currentTime').textContent = timeStr;
+      document.title = `DAVE XMD | ${timeStr}`;
+    }
+
+    // Battery Status
+    async function updateBatteryStatus() {
       if (navigator.getBattery) {
         try {
           const battery = await navigator.getBattery();
-          const setBattery = () => {
+          const updateBatteryUI = () => {
             const batteryPercent = Math.round(battery.level * 100);
             const batteryElement = document.getElementById('battery');
-            batteryElement.innerText = `${batteryPercent}%`;
-
-            // Add battery icon based on level
+            const batteryChip = document.getElementById('batteryChip');
+            
+            batteryElement.textContent = `${batteryPercent}%`;
+            
+            // Update icon based on battery level
             let batteryIcon = 'fa-bolt';
-            if (batteryPercent <= 20) batteryIcon = 'fa-battery-quarter';
-            else if (batteryPercent <= 50) batteryIcon = 'fa-battery-half';
-            else if (batteryPercent <= 80) batteryIcon = 'fa-battery-three-quarters';
-            else if (batteryPercent <= 100) batteryIcon = 'fa-battery-full';
-
-            batteryElement.previousElementSibling.className = `fas ${batteryIcon}`;
+            let statusClass = '';
+            
+            if (battery.charging) {
+              batteryIcon = 'fa-bolt';
+              statusClass = 'success';
+            } else if (batteryPercent <= 20) {
+              batteryIcon = 'fa-battery-quarter';
+              statusClass = 'warning';
+            } else if (batteryPercent <= 50) {
+              batteryIcon = 'fa-battery-half';
+            } else if (batteryPercent <= 80) {
+              batteryIcon = 'fa-battery-three-quarters';
+            } else {
+              batteryIcon = 'fa-battery-full';
+              statusClass = 'success';
+            }
+            
+            batteryChip.querySelector('i').className = `fas ${batteryIcon}`;
+            batteryChip.className = `status-chip ${statusClass}`;
           };
-
-          battery.addEventListener('levelchange', setBattery);
-          battery.addEventListener('chargingchange', setBattery);
-          setBattery();
+          
+          battery.addEventListener('levelchange', updateBatteryUI);
+          battery.addEventListener('chargingchange', updateBatteryUI);
+          updateBatteryUI();
         } catch (error) {
           console.error('Battery API error:', error);
         }
       }
     }
 
-    // Music player controls
-    const togglePlay = (id) => {
-      const audio = document.getElementById(id);
-      const progress = document.getElementById('progress1');
-      const time = document.getElementById('time1');
-      const button = document.querySelector('button[onclick*="'+id+'"]');
-
-      if (audio.paused) {
-        audio.play();
-        button.innerHTML = '<i class="fas fa-pause"></i> PAUSE';
-
-        audio.ontimeupdate = () => {
-          const percent = (audio.currentTime / audio.duration) * 100;
-          progress.style.width = percent + '%';
-
-          const minutes = Math.floor(audio.currentTime / 60);
-          const seconds = Math.floor(audio.currentTime % 60);
-          time.textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
-        };
-
-        audio.onended = () => {
-          progress.style.width = '0%';
-          time.textContent = '0:00';
-          button.innerHTML = '<i class="fas fa-play"></i> PLAY';
-        };
-      } else {
-        audio.pause();
-        button.innerHTML = '<i class="fas fa-play"></i> PLAY';
-      }
-    }
-
-    // IP address fetch
-    const fetchIP = async () => {
+    // IP Address
+    async function fetchIPAddress() {
       try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
         document.getElementById('ip').textContent = data.ip;
       } catch {
         document.getElementById('ip').textContent = 'Offline';
       }
     }
 
-    // Tool hover effects
-    const setupToolHover = () => {
-      const tools = document.querySelectorAll('.tool');
-      tools.forEach(tool => {
-        tool.addEventListener('mouseenter', () => {
-          tool.style.transform = 'translateY(-8px)';
+    // Music Player
+    let isPlaying = false;
+    const audio = document.getElementById('audioPlayer');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeDisplay = document.getElementById('currentTimeDisplay');
+    const durationDisplay = document.getElementById('durationDisplay');
+    const trackPlayer = document.getElementById('trackPlayer');
+
+    function initMusicPlayer() {
+      // Set duration when metadata loads
+      audio.addEventListener('loadedmetadata', () => {
+        const duration = formatTime(audio.duration);
+        durationDisplay.textContent = duration;
+      });
+
+      // Update progress bar
+      audio.addEventListener('timeupdate', () => {
+        if (audio.duration) {
+          const progress = (audio.currentTime / audio.duration) * 100;
+          progressBar.style.width = `${progress}%`;
+          currentTimeDisplay.textContent = formatTime(audio.currentTime);
+        }
+      });
+
+      // Handle audio end
+      audio.addEventListener('ended', () => {
+        isPlaying = false;
+        playIcon.className = 'fas fa-play';
+        trackPlayer.classList.remove('playing');
+        progressBar.style.width = '0%';
+      });
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        audio.pause();
+        playIcon.className = 'fas fa-play';
+        trackPlayer.classList.remove('playing');
+      } else {
+        audio.play();
+        playIcon.className = 'fas fa-pause';
+        trackPlayer.classList.add('playing');
+      }
+      isPlaying = !isPlaying;
+    }
+
+    function skipBackward() {
+      audio.currentTime = Math.max(0, audio.currentTime - 10);
+    }
+
+    function skipForward() {
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+    }
+
+    function seekAudio(event) {
+      const progressContainer = event.currentTarget;
+      const clickPosition = event.offsetX;
+      const containerWidth = progressContainer.clientWidth;
+      const seekTime = (clickPosition / containerWidth) * audio.duration;
+      audio.currentTime = seekTime;
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    // Hover Effects
+    function setupHoverEffects() {
+      const cards = document.querySelectorAll('.cyber-card');
+      cards.forEach(card => {
+        card.addEventListener('touchstart', () => {
+          card.style.transform = 'translateY(-4px) scale(1.02)';
         });
-        tool.addEventListener('mouseleave', () => {
-          tool.style.transform = 'translateY(0)';
+        
+        card.addEventListener('touchend', () => {
+          setTimeout(() => {
+            card.style.transform = 'translateY(0) scale(1)';
+          }, 150);
         });
       });
     }
 
-    // Initialize everything
-    const init = () => {
-      updateTime();
-      updateBattery();
-      fetchIP();
-      setupToolHover();
-    };
+    // Vibrate on mobile interaction
+    function vibrate(ms = 50) {
+      if (navigator.vibrate) {
+        navigator.vibrate(ms);
+      }
+    }
 
-    window.addEventListener('load', init);
+    // Add vibration to card clicks
+    document.querySelectorAll('.cyber-card').forEach(card => {
+      card.addEventListener('click', () => vibrate(30));
+    });
   </script>
 </body>
-  </html>
+</html>
