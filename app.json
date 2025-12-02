@@ -1,8 +1,8 @@
 {
-    "name": "dave-session",
+    "name": "June-x",
     "description": "Web Session Generator",
     "logo": "https://files.catbox.moe/lu3bqk.jpg",
-    "repository": "https://github.com/gifteddevsmd/DAVE-PAIR",
+    "repository": "https://github.com/vinpink2/orender.pair",
     "keywords": ["Trashcore"],
     "success_url": "/", 
     "buildpacks": [{ "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest" } ],
