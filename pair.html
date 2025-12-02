@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pair Code | June X-Bot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-gradient: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 50%, #a78bfa 100%);
+      --secondary-gradient: linear-gradient(135deg, #8b5cf6 0%, #c026d3 100%);
+      --accent-color: #f0abfc;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --bg-dark: rgba(15, 23, 42, 0.85);
+      --bg-darker: rgba(2, 6, 23, 0.9);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --shadow-color: rgba(139, 92, 246, 0.3);
+      --success-color: #10b981;
+      --error-color: #ef4444;
+      --warning-color: #f59e0b;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(109, 40, 217, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(199, 210, 254, 0.1) 0%, transparent 50%),
+        url("https://files.catbox.moe/0xmnxl.jpg") center/cover no-repeat fixed;
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(2, 6, 23, 0.95) 100%);
+      z-index: -1;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 20px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .box {
+      width: 100%;
+      max-width: 420px;
+      padding: 35px 30px;
+      position: relative;
+      text-align: center;
+      background: var(--bg-darker);
+      border-radius: 20px;
+      transform: perspective(1000px) rotateY(0deg);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px var(--border-color),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                  box-shadow 0.5s ease;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: var(--primary-gradient);
+      opacity: 0.05;
+      z-index: -1;
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .box:hover {
+      transform: perspective(1000px) rotateY(5deg) translateY(-5px);
+      box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 20px var(--shadow-color),
+        0 0 0 1px rgba(139, 92, 246, 0.3);
+    }
+
+    #text {
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .user-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+      text-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .centered-text {
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      margin: 15px 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .highlight {
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .input-container {
+      display: flex;
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 14px;
+      padding: 0.3rem;
+      gap: 0.3rem;
+      width: 100%;
+      margin: 25px 0;
+      box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 4px 20px rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .input-container:focus-within {
+      background: rgba(30, 41, 59, 0.9);
+      box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 4px 25px rgba(139, 92, 246, 0.4);
+      border: 1px solid rgba(139, 92, 246, 0.5);
+    }
+
+    .input-container input {
+      border-radius: 12px 0 0 12px;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      box-shadow: inset 3px 3px 6px #d1d5db, inset -3px -3px 6px #ffffff;
+      width: 100%;
+      flex-basis: 75%;
+      padding: 1.1rem;
+      border: none;
+      border-left: 4px solid #6d28d9;
+      color: #0f172a;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .input-container input:focus {
+      border-left: 4px solid #8b5cf6;
+      outline: none;
+      box-shadow: 
+        inset 3px 3px 6px #d1d5db, 
+        inset -3px -3px 6px #ffffff,
+        0 0 0 3px rgba(139, 92, 246, 0.1);
+    }
+
+    .input-container input::placeholder {
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .input-container button {
+      flex-basis: 25%;
+      padding: 1.1rem;
+      background: var(--secondary-gradient);
+      font-weight: 700;
+      letter-spacing: 0.15rem;
+      text-transform: uppercase;
+      color: white;
+      border: none;
+      border-radius: 0 12px 12px 0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .input-container button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.7s;
+    }
+
+    .input-container button:hover {
+      background: linear-gradient(135deg, #8b5cf6 0%, #c026d3 50%, #f0abfc 100%);
+      box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .input-container button:hover::before {
+      left: 100%;
+    }
+
+    .input-container button:active {
+      transform: translateY(0);
+    }
+
+    #waiting-message {
+      display: none;
+      color: var(--accent-color);
+      margin-top: 15px;
+      font-style: italic;
+      font-size: 0.9rem;
+      animation: fadeInOut 1.5s infinite;
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    main#pair {
+      margin-top: 25px;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .code-display {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+      padding: 18px 25px;
+      border-radius: 14px;
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .code-display::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary-gradient);
+    }
+
+    .code-display:hover {
+      background: linear-gradient(135deg, rgba(41, 53, 72, 0.95) 0%, rgba(25, 33, 52, 1) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.2);
+    }
+
+    .code-text {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .code-value {
+      color: #f0abfc;
+      text-shadow: 0 0 10px rgba(240, 171, 252, 0.5);
+      font-family: 'Monaco', 'Consolas', monospace;
+      letter-spacing: 1px;
+      background: rgba(240, 171, 252, 0.1);
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(240, 171, 252, 0.2);
+    }
+
+    .footer {
+      margin-top: 25px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-align: center;
+      padding: 15px;
+      border-top: 1px solid var(--border-color);
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .heart {
+      color: #f87171;
+      animation: heartbeat 1.5s infinite;
+      display: inline-block;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.1); }
+    }
+
+    @media (max-width: 500px) {
+      .box {
+        width: 95%;
+        padding: 25px 20px;
+      }
+
+      .input-container {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .input-container input {
+        border-radius: 12px;
+        width: 100%;
+        border-left: 4px solid #6d28d9;
+      }
+
+      .input-container button {
+        padding: 1rem;
+        border-radius: 12px;
+        width: 100%;
+      }
+
+      .user-icon {
+        font-size: 2.5rem;
+      }
+      
+      .centered-text {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Glowing dots animation */
+    .glow-dots {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .glow-dot {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent-color);
+      box-shadow: 0 0 10px 2px var(--accent-color);
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main">
+      <div class="box" id="box">
+        <div id="text">
+          <i class="fas fa-user-astronaut user-icon"></i>
+          <h3 class="centered-text">JUNE X-BOT PAIR CODE</h3>
+          <p class="subtitle">By <span class="highlight">Humans</span> For <span class="highlight">Humans</span>!</p>
+          <p class="subtitle">Enter Your WhatsApp Number with Country Code</p>
+          
+          <div class="input-container">
+            <input placeholder="254792021944" type="number" id="number" placeholder="e.g., 254712345678" name="">
+            <button id="submit">
+              <i class="fas fa-paper-plane"></i> SUBMIT
+            </button>
+          </div>
+          
+          <a id="waiting-message" class="centered-text" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i> Processing your request...
+          </a>
+          
+          <main id="pair"></main>
+        </div>
+      </div>
+      <div class="footer">
+        &copy; 2025 JUNE-X BOT | All Rights Reserved <span class="heart">💘</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="glow-dots" id="glowDots"></div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+  <script>
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+    let box = document.getElementById("box");
+    let waitingMessage = document.getElementById("waiting-message");
+    let glowDots = document.getElementById("glowDots");
+
+    // Create animated glow dots
+    function createGlowDots() {
+      const colors = ['#8b5cf6', '#c026d3', '#f0abfc', '#6d28d9'];
+      for (let i = 0; i < 15; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'glow-dot';
+        dot.style.left = `${Math.random() * 100}%`;
+        dot.style.top = `${Math.random() * 100}%`;
+        dot.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        dot.style.animation = `moveDot ${5 + Math.random() * 10}s linear infinite`;
+        
+        // Add animation
+        const style = document.createElement('style');
+        style.textContent = `
+          @keyframes moveDot {
+            0% { transform: translate(0, 0); opacity: 0.3; }
+            25% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px); opacity: 0.7; }
+            50% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px); opacity: 0.3; }
+            75% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px); opacity: 0.7; }
+            100% { transform: translate(0, 0); opacity: 0.3; }
+          }
+        `;
+        document.head.appendChild(style);
+        
+        glowDots.appendChild(dot);
+      }
+    }
+
+    async function Copy() {
+      let text = document.getElementById("copy").innerText;
+      let obj = document.getElementById("copy");
+      const code = obj.innerText.replace('CODE: ', '');
+      
+      try {
+        await navigator.clipboard.writeText(code);
+        
+        // Visual feedback for copying
+        obj.innerHTML = `
+          <span class="code-text">
+            <i class="fas fa-check" style="color:var(--success-color)"></i>
+            COPIED! <span style="color:var(--success-color)">✓</span>
+          </span>
+        `;
+        
+        obj.style.background = 'rgba(16, 185, 129, 0.1)';
+        obj.style.border = '1px solid var(--success-color)';
+        
+        setTimeout(() => {
+          obj.innerHTML = `<span class="code-text">CODE: <span class="code-value">${code}</span></span>`;
+          obj.style.background = '';
+          obj.style.border = '1px solid var(--border-color)';
+        }, 1500);
+      } catch (err) {
+        obj.innerHTML = `<span class="code-text" style="color:var(--error-color)">Copy Failed</span>`;
+        setTimeout(() => {
+          obj.innerHTML = `<span class="code-text">CODE: <span class="code-value">${code}</span></span>`;
+        }, 1500);
+      }
+    }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      
+      // Clear previous result
+      a.innerHTML = '';
+      
+      if (!c.value.trim()) {
+        a.innerHTML = `
+          <div class="code-display">
+            <span class="code-text" style="color:var(--error-color)">
+              <i class="fas fa-exclamation-circle"></i> Please enter your WhatsApp number
+            </span>
+          </div>`;
+        return;
+      }
+      
+      const rawNumber = c.value.replace(/[^0-9]/g, "");
+      
+      if (rawNumber.length < 11) {
+        a.innerHTML = `
+          <div class="code-display">
+            <span class="code-text" style="color:var(--warning-color)">
+              <i class="fas fa-exclamation-triangle"></i> Invalid number format
+            </span>
+          </div>`;
+        return;
+      }
+      
+      // Format number display
+      let formattedNumber = "+";
+      for (let i = 0; i < rawNumber.length; i++) {
+        if (i === 3 || i === 6 || i === 9) {
+          formattedNumber += " ";
+        }
+        formattedNumber += rawNumber[i];
+      }
+      
+      c.type = "text";
+      c.value = formattedNumber;
+      c.style = "color:#0f172a; font-size:18px; font-weight:600";
+      
+      // Show processing message
+      a.innerHTML = `
+        <div class="code-display">
+          <span class="code-text">
+            <i class="fas fa-spinner fa-spin" style="color:var(--accent-color)"></i>
+            Generating your pair code...
+          </span>
+        </div>`;
+      
+      waitingMessage.style.display = "block";
+      
+      try {
+        // Simulate API call - replace with your actual endpoint
+        const response = await axios.get(`/code?number=${rawNumber}`, {
+          timeout: 10000
+        });
+        
+        let code = response.data.code || "SERVICE_UNAVAILABLE";
+        
+        if (code === "SERVICE_UNAVAILABLE") {
+          throw new Error("Service unavailable");
+        }
+        
+        a.innerHTML = `
+          <div class="code-display" id="copy" onclick="Copy()">
+            <span class="code-text">
+              <i class="fas fa-key"></i> CODE: 
+              <span class="code-value">${code}</span>
+              <small style="font-size:0.7rem; color:var(--text-secondary); margin-left:10px;">
+                <i class="fas fa-mouse-pointer"></i> Click to copy
+              </small>
+            </span>
+          </div>`;
+          
+      } catch (error) {
+        console.error("Error:", error);
+        a.innerHTML = `
+          <div class="code-display">
+            <span class="code-text" style="color:var(--error-color)">
+              <i class="fas fa-times-circle"></i> Error: Service temporarily unavailable
+            </span>
+          </div>`;
+      } finally {
+        waitingMessage.style.display = "none";
+      }
+    });
+
+    // Create glow dots on load
+    window.addEventListener('DOMContentLoaded', createGlowDots);
+    
+    // Add input validation
+    c.addEventListener('input', function() {
+      if (this.value.length > 15) {
+        this.value = this.value.slice(0, 15);
+      }
+    });
+    
+    // Add enter key support
+    c.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        b.click();
+      }
+    });
+  </script>
+</body>
+</html>
