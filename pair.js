@@ -11,7 +11,7 @@ const {
     delay,
     makeCacheableSignalKeyStore,
     Browsers
-} = require('@trashcore/baileys');
+} = require('@whiskeysockets/baileys');
 
 function removeFile(FilePath) {
     if (!fs.existsSync(FilePath)) return false;
@@ -21,7 +21,7 @@ function removeFile(FilePath) {
 router.get('/', async (req, res) => {
     const id = makeid();
     let num = req.query.number;
-
+    
     async function Mbuvi_MD_PAIR_CODE() {
         const { state, saveCreds } = await useMultiFileAuthState('./temp/' + id);
         try {
@@ -33,13 +33,13 @@ router.get('/', async (req, res) => {
                 version: [2, 3000, 1025190524],
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-               browser: ["Ubuntu", "Opera", "100.0.4815.0"],  
+                browser: ["Windows", "Firefox", "130.0.1"],
             });
 
             if (!Pair_Code_By_Mbuvi_Tech.authState.creds.registered) {
                 await delay(1500);
                 num = num.replace(/[^0-9]/g, '');
-               const custom = "DAVEBOTS";
+               const custom = "JUNEXBOT";
                 const code = await Pair_Code_By_Mbuvi_Tech.requestPairingCode(num,custom);
                 if (!res.headersSent) {
                     await res.send({ code });
@@ -50,21 +50,24 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Mbuvi_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
-                    await Pair_Code_By_Mbuvi_Tech.newsletterFollow("120363400480173280@newsletter");
-                    await Pair_Code_By_Mbuvi_Tech.groupAcceptInvite("JLr6bCrervmE6b5UaGbHzt");
+                    await Pair_Code_By_Mbuvi_Tech.newsletterFollow("120363423767541304@newsletter");
+                    await Pair_Code_By_Mbuvi_Tech.groupAcceptInvite("Hd14oCh8LT1A3EheIpZycL");
                     await delay(5000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
                     await delay(1000);
                     let b64data = Buffer.from(data).toString('base64');
-                    let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: 'DAVE-AI:~' + b64data });
+                    let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: 'JUNE-MD:~' + b64data });
 
                     let Mbuvi_MD_TEXT = `
         
 ╔════════════════════
 ║『 SESSION CONNECTED』
-║ OWNER: Dave
+║ 🟢 BOT: June x
+║ 🟢 OWNER: supreme
+║ 🟢 TYPE: Base64
+╚════════════════════
 
-Don't Forget To Give Star ⭐ ⭐ To My Repo
+Don't Forget To Give Star⭐ To My Repo
 ______________________________`;
 
                     await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: Mbuvi_MD_TEXT }, { quoted: session });
@@ -85,7 +88,7 @@ ______________________________`;
             }
         }
     }
-
+    
     return await Mbuvi_MD_PAIR_CODE();
 });
 
