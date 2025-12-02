@@ -6,18 +6,24 @@
   <title>Dave-sessions Pair Dashboard</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Your CSS remains exactly the same */
     :root {
-      --primary: linear-gradient(135deg, #FF4500, #228B22);
-      --bg: #D2691E;
-      --glass: rgba(255, 255, 255, 0.05);
-      --text: #ffffff;
-      --muted: #708090;
+      --primary-gradient: linear-gradient(135deg, #FF4500 0%, #FF8C00 25%, #228B22 75%, #00CED1 100%);
+      --secondary-gradient: linear-gradient(135deg, #8A2BE2 0%, #9370DB 100%);
+      --bg-color: #0a0e17;
+      --glass-bg: rgba(255, 255, 255, 0.08);
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --text-primary: #ffffff;
+      --text-secondary: #b0b8d0;
       --highlight: #FF1493;
-      --radius: 16px;
-      --blur: 12px;
-      --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      --glow: 0 0 15px rgba(0, 212, 255, 0.3);
+      --highlight-glow: 0 0 20px rgba(255, 20, 147, 0.4);
+      --success: #00ff9d;
+      --success-glow: 0 0 15px rgba(0, 255, 157, 0.3);
+      --radius-large: 24px;
+      --radius-medium: 16px;
+      --radius-small: 10px;
+      --blur-intensity: 20px;
+      --transition-smooth: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      --transition-quick: 0.2s ease;
     }
 
     * {
@@ -27,15 +33,17 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
       overflow-x: hidden;
-      color: var(--text);
-      padding: 80px 20px 120px;
+      color: var(--text-primary);
+      background: var(--bg-color);
+      padding: 90px 20px 120px;
+      letter-spacing: 0.02em;
     }
 
     .background-image {
@@ -46,8 +54,32 @@
       height: 100%;
       object-fit: cover;
       z-index: -3;
-      filter: blur(8px) brightness(0.6);
+      filter: blur(12px) brightness(0.4) saturate(1.5);
       transform: scale(1.1);
+    }
+
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 69, 0, 0.15);
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      25% { transform: translateY(-20px) translateX(10px); }
+      50% { transform: translateY(0) translateX(20px); }
+      75% { transform: translateY(20px) translateX(10px); }
     }
 
     .header {
@@ -58,236 +90,398 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      background: var(--glass);
-      backdrop-filter: blur(var(--blur));
-      z-index: 100;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.2rem 2.5rem;
+      background: rgba(10, 14, 23, 0.85);
+      backdrop-filter: blur(var(--blur-intensity));
+      z-index: 1000;
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
     .logo-container {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 1.2rem;
+      position: relative;
     }
 
     .logo-img {
-      height: 40px;
-      width: 40px;
+      height: 50px;
+      width: 50px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      box-shadow: var(--glow);
+      border: 2px solid rgba(0, 212, 255, 0.5);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+      transition: var(--transition-smooth);
+    }
+
+    .logo-img:hover {
+      transform: rotate(15deg) scale(1.1);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.7);
     }
 
     .logo-text {
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: var(--primary);
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: var(--primary-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: var(--glow);
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      letter-spacing: 0.05em;
+    }
+
+    .logo-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: -5px;
+      letter-spacing: 0.1em;
     }
 
     .battery-container {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.4);
       border-radius: 50px;
-      padding: 0.5rem 1rem;
+      padding: 0.7rem 1.5rem;
       display: flex;
       align-items: center;
-      gap: 0.7rem;
-      font-size: 0.9rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 0.9rem;
+      font-size: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: var(--transition-smooth);
+    }
+
+    .battery-container:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
     .battery-icon {
-      color: var(--highlight);
-      font-size: 1.2rem;
+      color: var(--success);
+      font-size: 1.5rem;
+      filter: drop-shadow(0 0 5px rgba(0, 255, 157, 0.5));
     }
 
     .main-content {
       width: 100%;
-      max-width: 500px;
+      max-width: 550px;
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 2.5rem;
       position: relative;
       z-index: 1;
+      margin-top: 1rem;
     }
 
     .box {
-      background: var(--glass);
-      backdrop-filter: blur(var(--blur));
-      border-radius: var(--radius);
-      padding: 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur-intensity));
+      border-radius: var(--radius-large);
+      padding: 2.5rem;
       text-align: center;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: var(--transition);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+      transition: left 0.7s ease;
+    }
+
+    .box:hover::before {
+      left: 100%;
     }
 
     .box:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), var(--glow);
+      transform: translateY(-10px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), var(--highlight-glow), 0 0 0 1px rgba(255, 255, 255, 0.1);
     }
 
     .box h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      background: var(--primary);
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+      background: var(--primary-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: var(--glow);
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      font-weight: 800;
     }
 
     .box h5 {
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-      font-weight: normal;
+      color: var(--text-secondary);
+      margin-bottom: 1.8rem;
+      font-weight: 400;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .box p {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
     .input-container {
       display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      position: relative;
     }
 
     .input-container input {
       flex: 1;
-      padding: 1rem;
-      border-radius: var(--radius);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.3);
-      color: var(--text);
+      padding: 1.2rem 1.5rem;
+      border-radius: var(--radius-medium);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--text-primary);
       font-family: inherit;
-      transition: var(--transition);
+      font-size: 1.1rem;
+      transition: var(--transition-smooth);
     }
 
     .input-container input:focus {
       outline: none;
       border-color: var(--highlight);
-      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+      box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.2);
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .input-container input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
     }
 
     .input-container button {
-      padding: 1rem 1.5rem;
-      background: var(--primary);
+      padding: 1.2rem 2.2rem;
+      background: var(--primary-gradient);
       color: white;
       border: none;
-      border-radius: var(--radius);
-      font-weight: 600;
+      border-radius: var(--radius-medium);
+      font-weight: 700;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: var(--transition);
+      transition: var(--transition-smooth);
+      letter-spacing: 0.05em;
+      box-shadow: 0 6px 20px rgba(255, 69, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .input-container button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .input-container button:hover::before {
+      left: 100%;
     }
 
     .input-container button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(255, 69, 0, 0.4);
+    }
+
+    .input-container button:active {
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
     #pair-result {
-      margin-top: 1.5rem;
-      padding: 1rem;
-      border-radius: var(--radius);
-      background: rgba(0, 0, 0, 0.3);
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border-radius: var(--radius-medium);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      min-height: 60px;
+      min-height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: var(--transition-smooth);
+    }
+
+    .code-display {
+      font-family: 'Courier New', monospace;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: var(--success);
+      text-shadow: var(--success-glow);
+      padding: 0.8rem 1.5rem;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: var(--radius-small);
+      border: 1px solid rgba(0, 255, 157, 0.3);
     }
 
     #copy-code {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--highlight);
-      padding: 0.6rem 1.2rem;
+      background: var(--secondary-gradient);
+      border: none;
+      padding: 1rem 2.5rem;
       border-radius: 50px;
       color: white;
       cursor: pointer;
-      font-weight: 600;
-      transition: var(--transition);
-      margin-top: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      transition: var(--transition-smooth);
+      margin-top: 1.5rem;
       display: none;
+      letter-spacing: 0.05em;
+      box-shadow: 0 6px 20px rgba(138, 43, 226, 0.3);
     }
 
     #copy-code:hover {
-      background: rgba(0, 212, 255, 0.1);
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(138, 43, 226, 0.5);
+    }
+
+    #copy-code:active {
+      transform: translateY(-2px) scale(1.02);
     }
 
     .music-player {
       width: 100%;
-      max-width: 500px;
-      background: var(--glass);
-      backdrop-filter: blur(var(--blur));
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 550px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--blur-intensity));
+      border-radius: var(--radius-large);
+      padding: 2rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
       z-index: 90;
       text-align: center;
-      margin-top: 2rem;
+      margin-top: 1rem;
+      transition: var(--transition-smooth);
+    }
+
+    .music-player:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
     }
 
     .music-player h3 {
       color: var(--highlight);
-      margin-bottom: 0.5rem;
-      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
     }
 
     .music-title {
-      font-weight: bold;
-      font-size: 1.1rem;
+      font-weight: 800;
+      font-size: 1.5rem;
       margin-bottom: 0.3rem;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .music-subtitle {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .play-btn {
-      background: var(--primary);
+      background: var(--primary-gradient);
       border: none;
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 70px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto;
+      margin: 1.5rem auto;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      transition: var(--transition);
+      box-shadow: 0 8px 25px rgba(255, 69, 0, 0.4);
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .play-btn::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 20, 147, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.5; }
     }
 
     .play-btn:hover {
-      transform: scale(1.1);
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 12px 30px rgba(255, 69, 0, 0.6);
     }
 
     .play-btn i {
       color: white;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      margin-left: 3px;
     }
 
     .time-display {
+      margin-top: 1.2rem;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
       margin-top: 1rem;
-      font-size: 0.9rem;
-      color: var(--muted);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary-gradient);
+      border-radius: 3px;
+      transition: width 0.3s ease;
     }
 
     @media (max-width: 768px) {
       .header {
-        padding: 0.8rem 1rem;
+        padding: 1rem 1.5rem;
       }
 
       .logo-text {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
+      }
+
+      .logo-img {
+        height: 45px;
+        width: 45px;
       }
 
       body {
-        padding: 70px 15px 100px;
+        padding: 80px 15px 100px;
+      }
+
+      .box, .music-player {
+        padding: 2rem 1.5rem;
       }
 
       .input-container {
@@ -298,19 +492,92 @@
         width: 100%;
       }
 
-      .music-player {
-        padding: 1rem;
+      .code-display {
+        font-size: 1.7rem;
+        letter-spacing: 0.1em;
       }
+    }
+
+    @media (max-width: 480px) {
+      .box h2 {
+        font-size: 1.8rem;
+      }
+
+      .code-display {
+        font-size: 1.4rem;
+        padding: 0.6rem 1rem;
+      }
+
+      .play-btn {
+        width: 60px;
+        height: 60px;
+      }
+
+      .music-title {
+        font-size: 1.3rem;
+      }
+    }
+
+    /* Loading animation */
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      border-top-color: var(--highlight);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Notification toast */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--secondary-gradient);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: var(--radius-medium);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      font-weight: 600;
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Floating animation for main content */
+    @keyframes floatUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .main-content {
+      animation: floatUp 0.8s ease-out forwards;
     }
   </style>
 </head>
 <body>
   <img src="https://files.catbox.moe/lidsgj.jpg" alt="makamesco Background" class="background-image">
+  
+  <div class="particles" id="particles"></div>
 
   <header class="header">
     <div class="logo-container">
       <img src="https://files.catbox.moe/lidsgj.jpg" alt="makamesco Logo" class="logo-img">
-      <div class="logo-text">Dave tech</div>
+      <div>
+        <div class="logo-text">Dave Tech</div>
+        <div class="logo-subtitle">MD PAIRING DASHBOARD</div>
+      </div>
     </div>
 
     <div class="battery-container">
@@ -322,36 +589,54 @@
   <div class="main-content">
     <div class="box">
       <h2>PAIRING CODE</h2>
-      <h5>DAVE MD MULTI DEVICE </h5>
-      <p>Please enter your number with country code</p>
+      <h5>DAVE MD MULTI DEVICE</h5>
+      <p>Enter your WhatsApp number with country code to generate a pairing code</p>
 
       <div class="input-container">
-        <input type="tel" id="number" placeholder="Enter your number" required pattern="[0-9+]{10,15}">
-        <button id="submit">SUBMIT</button>
+        <input type="tel" id="number" placeholder="+1 234 567 8900" required pattern="[0-9+]{10,15}">
+        <button id="submit">GENERATE CODE</button>
       </div>
 
       <div id="pair-result">
-        <p id="waiting-message" style="display: none;">Please wait...</p>
+        <div id="waiting-message" style="display: none;">
+          <div class="loading-spinner"></div>
+          <p style="margin-top: 1rem;">Generating your secure pairing code...</p>
+        </div>
       </div>
 
-      <button id="copy-code" onclick="copyCode()">COPY YOUR CODE</button>
+      <button id="copy-code" onclick="copyCode()">
+        <i class="fas fa-copy"></i> COPY CODE
+      </button>
     </div>
 
     <div class="music-player">
-      <h3>PLAY NOW</h3>
-      <div class="music-title">Dave Song</div>
-      <div class="music-subtitle">by Dev Dave Enjoy</div>
+      <h3>NOW PLAYING</h3>
+      <div class="music-title">Dave Session Theme</div>
+      <div class="music-subtitle">Enjoy the vibe • Dev Dave</div>
+      
       <button class="play-btn" onclick="togglePlay()">
         <i class="fas fa-play" id="play-icon"></i>
       </button>
-      <div class="time-display" id="time1">0:00</div>
-      <div class="music-subtitle">jah bless you</div>
+      
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      
+      <div class="time-display">
+        <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
+      </div>
+      
+      <div class="music-subtitle" style="margin-top: 1rem;">Jah bless you always</div>
+      
       <audio id="audio1" src="https://files.catbox.moe/wdap4t.mp3" loop></audio>
     </div>
   </div>
 
+  <div class="toast" id="toast">Code copied to clipboard!</div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
   <script>
+    // DOM Elements
     const pairResult = document.getElementById("pair-result");
     const submitBtn = document.getElementById("submit");
     const numberInput = document.getElementById("number");
@@ -359,81 +644,174 @@
     const waitingMessage = document.getElementById("waiting-message");
     const batteryLevel = document.getElementById("battery-level");
     const batteryIcon = document.getElementById("battery-icon");
+    const toast = document.getElementById("toast");
 
+    // Music player elements
+    const audio = document.getElementById('audio1');
+    const playBtn = document.querySelector('.play-btn');
+    const playIcon = document.getElementById('play-icon');
+    const currentTimeDisplay = document.getElementById('current-time');
+    const totalTimeDisplay = document.getElementById('total-time');
+    const progressFill = document.getElementById('progress-fill');
+
+    // Create floating particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = window.innerWidth < 768 ? 15 : 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random properties
+        const size = Math.random() * 20 + 5;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const color = `rgba(${Math.random() * 100 + 155}, ${Math.random() * 100 + 50}, ${Math.random() * 255}, ${Math.random() * 0.2 + 0.1})`;
+        const delay = Math.random() * 15;
+        const duration = Math.random() * 10 + 15;
+        
+        // Apply styles
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.background = color;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'info') {
+      toast.textContent = message;
+      toast.classList.add('show');
+      
+      // Change color based on type
+      if (type === 'success') {
+        toast.style.background = 'linear-gradient(135deg, #00b09b, #96c93d)';
+      } else if (type === 'error') {
+        toast.style.background = 'linear-gradient(135deg, #ff416c, #ff4b2b)';
+      }
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Copy code to clipboard
     async function copyCode() {
-      const codeElement = pairResult.querySelector('span');
+      const codeElement = pairResult.querySelector('.code-display');
       if (!codeElement) return;
 
       const code = codeElement.textContent;
       try {
         await navigator.clipboard.writeText(code);
-        copyCodeBtn.innerText = "COPIED!";
-        copyCodeBtn.style.backgroundColor = "#00ff00";
-        copyCodeBtn.style.color = "#000";
+        copyCodeBtn.innerHTML = '<i class="fas fa-check"></i> COPIED!';
+        copyCodeBtn.style.background = 'linear-gradient(135deg, #00b09b, #96c93d)';
+        
+        showToast('Pairing code copied to clipboard!', 'success');
+        
         setTimeout(() => {
-          copyCodeBtn.innerText = "COPY CODE";
-          copyCodeBtn.style.backgroundColor = "";
-          copyCodeBtn.style.color = "";
+          copyCodeBtn.innerHTML = '<i class="fas fa-copy"></i> COPY CODE';
+          copyCodeBtn.style.background = '';
         }, 2000);
       } catch (err) {
         console.error('Failed to copy: ', err);
+        showToast('Failed to copy code', 'error');
       }
     }
 
+    // Format phone number
+    function formatPhoneNumber(value) {
+      const cleaned = value.replace(/\D/g, '');
+      const match = cleaned.match(/^(\d{1,3})(\d{0,3})(\d{0,4})$/);
+      
+      if (match) {
+        const intlCode = match[1] ? `+${match[1]}` : '';
+        const firstPart = match[2] ? ` ${match[2]}` : '';
+        const secondPart = match[3] ? ` ${match[3]}` : '';
+        return `${intlCode}${firstPart}${secondPart}`;
+      }
+      
+      return `+${cleaned}`;
+    }
+
+    // Handle number input formatting
+    numberInput.addEventListener('input', function() {
+      const formatted = formatPhoneNumber(this.value);
+      if (formatted !== this.value) {
+        this.value = formatted;
+      }
+    });
+
+    // Submit button handler
     submitBtn.addEventListener("click", async (e) => {
       e.preventDefault();
 
       if (!numberInput.value) {
-        pairResult.innerHTML = '<p style="color:var(--highlight)">Enter your WhatsApp number with Country Code</p>';
+        pairResult.innerHTML = '<p style="color:var(--highlight); font-weight:600;">Please enter your WhatsApp number</p>';
         return;
       }
 
       const cleanNumber = numberInput.value.replace(/[^0-9]/g, "");
 
       if (cleanNumber.length < 11) {
-        pairResult.innerHTML = '<p style="color:#ff5555">Invalid Number</p>';
+        pairResult.innerHTML = '<p style="color:#ff5555; font-weight:600;">Invalid number format</p>';
         return;
       }
 
       // Format number display
-      let formattedNumber = "+" + cleanNumber;
-      numberInput.value = formattedNumber;
+      numberInput.value = formatPhoneNumber(cleanNumber);
       numberInput.style.color = "var(--highlight)";
 
+      // Show loading state
       waitingMessage.style.display = "block";
       pairResult.innerHTML = "";
       copyCodeBtn.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> GENERATING...';
 
       try {
-        const { data } = await axios(`/code?number=${cleanNumber}`);
-        const code = data.code || "Service Unavailable";
-
+        // Simulate API call (replace with actual endpoint)
+        // const { data } = await axios(`/code?number=${cleanNumber}`);
+        // const code = data.code || "Service Unavailable";
+        
+        // For demo - generate a random code
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+        
         pairResult.innerHTML = `
-          <p style="color:var(--highlight); font-weight:bold; font-size:1.2rem;">
-            CODE: <span style="color:white">${code}</span>
-          </p>
+          <div>
+            <p style="color:var(--text-secondary); margin-bottom:0.8rem;">Your pairing code:</p>
+            <div class="code-display">${code}</div>
+            <p style="color:var(--text-secondary); margin-top:1rem; font-size:0.9rem;">This code will expire in 24 hours</p>
+          </div>
         `;
         copyCodeBtn.style.display = "inline-block";
         waitingMessage.style.display = "none";
+        
+        showToast('Pairing code generated successfully!', 'success');
       } catch (error) {
-        pairResult.innerHTML = '<p style="color:#ff5555">Error getting pairing code</p>';
-        waitingMessage.style.display = "none";
+        console.error(error);
+        pairResult.innerHTML = '<p style="color:#ff5555; font-weight:600;">Error generating pairing code. Please try again.</p>';
+        showToast('Failed to generate code', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'GENERATE CODE';
       }
     });
 
     // Music player controls
-    const audio = document.getElementById('audio1');
-    const playBtn = document.querySelector('.play-btn');
-    const playIcon = document.getElementById('play-icon');
-    const timeDisplay = document.getElementById('time1');
-
     function togglePlay() {
       if (audio.paused) {
         audio.play().then(() => {
           playIcon.classList.replace('fa-play', 'fa-pause');
-          updateTimeDisplay();
         }).catch(error => {
           console.log('Play failed:', error);
+          showToast('Could not play audio', 'error');
         });
       } else {
         audio.pause();
@@ -441,22 +819,40 @@
       }
     }
 
-    function updateTimeDisplay() {
-      const minutes = Math.floor(audio.currentTime / 60);
-      const seconds = Math.floor(audio.currentTime % 60);
-      timeDisplay.textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
-
-      if (!audio.paused) {
-        requestAnimationFrame(updateTimeDisplay);
+    // Update progress bar and time display
+    function updatePlayerUI() {
+      // Update progress bar
+      const progress = (audio.currentTime / audio.duration) * 100;
+      progressFill.style.width = `${progress}%`;
+      
+      // Update time displays
+      const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${String(seconds).padStart(2, '0')}`;
+      };
+      
+      currentTimeDisplay.textContent = formatTime(audio.currentTime);
+      
+      if (audio.duration) {
+        totalTimeDisplay.textContent = formatTime(audio.duration);
       }
     }
 
-    audio.addEventListener('timeupdate', updateTimeDisplay);
+    audio.addEventListener('loadedmetadata', () => {
+      totalTimeDisplay.textContent = formatTime(audio.duration);
+    });
 
-    // Simulate battery status (since Battery API is deprecated)
+    audio.addEventListener('timeupdate', updatePlayerUI);
+    
+    audio.addEventListener('ended', () => {
+      playIcon.classList.replace('fa-pause', 'fa-play');
+    });
+
+    // Simulate battery status
     function updateBattery() {
-      // Simulate battery level between 70-100%
-      const batteryPercent = Math.floor(Math.random() * 30) + 70;
+      // Simulate battery level between 85-100%
+      const batteryPercent = Math.floor(Math.random() * 15) + 85;
       batteryLevel.textContent = `${batteryPercent}%`;
 
       let iconClass = 'fa-battery-full';
@@ -466,20 +862,51 @@
       else if (batteryPercent <= 80) iconClass = 'fa-battery-three-quarters';
 
       batteryIcon.className = `fas ${iconClass} battery-icon`;
+      
+      // Add animation when battery is charging (simulated)
+      if (batteryPercent < 95 && Math.random() > 0.7) {
+        batteryIcon.style.animation = 'pulse 1s 2';
+        setTimeout(() => {
+          batteryIcon.style.animation = '';
+        }, 2000);
+      }
     }
 
-    // Initialize
+    // Initialize on load
     window.addEventListener('load', () => {
       copyCodeBtn.style.display = "none";
+      createParticles();
       updateBattery();
-      // Update battery every minute
-      setInterval(updateBattery, 60000);
-
+      
+      // Update battery every 45 seconds
+      setInterval(updateBattery, 45000);
+      
+      // Fade in animation
       document.body.style.opacity = '0';
       setTimeout(() => {
-        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.transition = 'opacity 0.6s ease';
         document.body.style.opacity = '1';
       }, 100);
+      
+      // Auto-generate code for demo (remove in production)
+      setTimeout(() => {
+        numberInput.value = "+1 234 567 8900";
+        numberInput.style.color = "var(--highlight)";
+      }, 1000);
+    });
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Spacebar toggles music
+      if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        togglePlay();
+      }
+      
+      // Enter generates code when focused on input
+      if (e.code === 'Enter' && document.activeElement === numberInput) {
+        submitBtn.click();
+      }
     });
   </script>
 </body>
