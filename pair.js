@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
                     creds: state.creds,
                     keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'fatal' }).child({ level: 'fatal' })),
                 },
-                version: [2, 3000, 1025190524],
+                version: [2, 3000, 1027934701],
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
                 browser: ["Ubuntu","Opera","100.0.4815.0"],
