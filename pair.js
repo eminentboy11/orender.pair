@@ -50,13 +50,12 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Mbuvi_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
-                    await Pair_Code_By_Mbuvi_Tech.newsletterFollow("120363423767541304@newsletter");
-                    await Pair_Code_By_Mbuvi_Tech.groupAcceptInvite("Hd14oCh8LT1A3EheIpZycL");
+                    
                     await delay(5000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
                     await delay(1000);
                     let b64data = Buffer.from(data).toString('base64');
-                    let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: 'JUNE-MD:~' + b64data });
+                    let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: 'Gift-X:~' + b64data });
 
                     let Mbuvi_MD_TEXT = `
         
